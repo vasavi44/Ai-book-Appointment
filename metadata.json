@@ -1,0 +1,6 @@
+{
+  "name": "Book-a-Doctor AI No-Show Predictor",
+  "description": "Hospital appointment booking system with AI-based no-show probability prediction, risk scoring, reminder recommendations, and fairness evaluation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
