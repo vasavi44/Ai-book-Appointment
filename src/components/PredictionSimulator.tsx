@@ -3,6 +3,7 @@ import {
   AppointmentType,
   NoShowPrediction,
 } from '../types';
+import { computeClientPrediction } from '../utils/predictionFallback';
 import {
   Cpu,
   Sparkles,
@@ -51,12 +52,26 @@ export const PredictionSimulator: React.FC = () => {
           hasReminderConsent,
         }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setPrediction(data.data);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.data) {
+          setPrediction(data.data);
+          return;
+        }
       }
-    } catch (e) {
-      console.error('Failed to run simulation prediction', e);
+      throw new Error('API unavailable, running client model');
+    } catch {
+      const fallback = computeClientPrediction({
+        leadTimeDays,
+        dayOfWeek,
+        scheduledHour,
+        appointmentType,
+        previousAppointmentsCount,
+        previousNoShowsCount,
+        estimatedTravelTimeMins,
+        hasReminderConsent,
+      });
+      setPrediction(fallback);
     } finally {
       setLoading(false);
     }

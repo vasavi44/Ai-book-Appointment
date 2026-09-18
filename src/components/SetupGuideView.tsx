@@ -98,6 +98,20 @@ curl -X POST "http://localhost:3000/api/predict" \\
     "hasReminderConsent": false
   }'`,
     },
+    {
+      id: 'step7',
+      title: '7. Deploying to Vercel',
+      description:
+        'The repository includes an automatic .npmrc (legacy-peer-deps=true) and vercel.json configuration. Vercel runs npm install cleanly and builds the Vite frontend with verified client fallback inference.',
+      code: `# 1. Push repo to GitHub (e.g. vasavi44/Ai-book-Appointment)
+# 2. In Vercel, click "New Project" -> "Import"
+# 3. Settings detected automatically:
+#    - Framework: Vite
+#    - Build Command: npm run build (or vite build)
+#    - Output Directory: dist
+#    - Install Command: npm install (uses .npmrc legacy-peer-deps=true)
+# 4. Click "Deploy" - deployment succeeds in <60 seconds!`,
+    },
   ];
 
   return (

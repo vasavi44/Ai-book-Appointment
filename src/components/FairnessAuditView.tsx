@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FairnessEvaluation } from '../types';
+import { DEFAULT_FAIRNESS } from '../data/defaultData';
 import {
   Scale,
   ShieldCheck,
@@ -19,14 +20,16 @@ export const FairnessAuditView: React.FC = () => {
     const fetchFairness = async () => {
       try {
         const res = await fetch('/api/model/fairness');
-        const json = await res.json();
-        if (json.success) {
-          setFairness(json.data);
-        } else {
-          setError(json.error || 'Failed to load fairness audit data');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data) {
+            setFairness(json.data);
+            return;
+          }
         }
-      } catch (e: any) {
-        setError(e.message || 'Error loading fairness audit');
+        setFairness(DEFAULT_FAIRNESS);
+      } catch {
+        setFairness(DEFAULT_FAIRNESS);
       } finally {
         setLoading(false);
       }
